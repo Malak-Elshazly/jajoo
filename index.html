@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>jeje — Checkout</title>
+    <title>jeje — Official Boutique & Checkout</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for icons -->
+    <!-- FontAwesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Canvas Confetti for order success effect -->
+    <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         tailwind.config = {
@@ -26,7 +26,6 @@
                             700: '#be185d',
                             800: '#9d174d',
                             900: '#831843',
-                            950: '#500724',
                         },
                         rose: {
                             50: '#fff1f2',
@@ -86,9 +85,9 @@
         }
     </style>
 </head>
-<body class="min-h-screen text-slate-800 antialiased selection:bg-pink-200 selection:text-pink-900">
+<body class="min-h-screen text-slate-800 antialiased selection:bg-pink-200 selection:text-pink-900 flex flex-col justify-between">
 
-    <!-- Toast Notification Container -->
+    <!-- Toast Notification -->
     <div id="toast" class="fixed top-5 right-5 z-50 flex items-center gap-3 bg-white border-l-4 border-pink-500 shadow-xl rounded-r-xl p-4 transform translate-y-[-150%] opacity-0 max-w-md pointer-events-none transition-all duration-300">
         <div id="toast-icon" class="text-pink-500 text-xl">
             <i class="fa-solid fa-circle-check"></i>
@@ -99,209 +98,326 @@
         </div>
     </div>
 
-    <!-- Main Container -->
-    <div class="min-h-screen flex flex-col lg:flex-row max-w-7xl mx-auto shadow-2xl my-0 lg:my-6 rounded-none lg:rounded-3xl overflow-hidden bg-white">
-        
-        <!-- Left Side: Checkout Form Area -->
-        <div class="flex-1 p-4 sm:p-8 lg:p-12 overflow-y-auto">
+    <!-- Navigation Header -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-pink-100 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
+            <a href="#" onclick="showSection('store')" class="group flex items-center gap-2">
+                <span class="brand-logo text-3xl font-bold tracking-tight text-pink-600 transition group-hover:text-pink-700">jeje</span>
+                <span class="inline-block w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span>
+            </a>
             
-            <!-- Top Header & Brand -->
-            <header class="flex items-center justify-between pb-6 mb-6 border-b border-pink-100">
-                <a href="#" class="group flex items-center gap-2">
-                    <span class="brand-logo text-3xl sm:text-4xl font-bold tracking-tight text-pink-600 transition group-hover:text-pink-700">jeje</span>
-                    <span class="inline-block w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span>
-                </a>
-                
-                <div class="flex items-center gap-4 text-xs sm:text-sm text-slate-500">
-                    <span class="hidden sm:inline-flex items-center gap-1.5 bg-pink-50 text-pink-700 px-3 py-1.5 rounded-full font-medium border border-pink-200">
-                        <i class="fa-solid fa-bag-shopping text-pink-500"></i>
-                        EGP (L.E)
-                    </span>
-                    <button id="mobile-summary-toggle" onclick="toggleMobileSummary()" class="lg:hidden flex items-center gap-2 text-pink-600 font-medium bg-pink-50 px-3 py-1.5 rounded-lg border border-pink-200">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <span id="mobile-toggle-text">Show Order Summary</span>
-                        <i id="mobile-toggle-arrow" class="fa-solid fa-chevron-down text-xs transition-transform duration-200"></i>
-                    </button>
-                </div>
-            </header>
-
-            <!-- Mobile Summary Accordion Dropdown -->
-            <div id="mobile-summary-dropdown" class="hidden lg:hidden mb-6 p-4 bg-pink-50/70 rounded-2xl border border-pink-200 transition-all">
-                <div id="mobile-cart-items-container" class="space-y-3 mb-4 max-h-60 overflow-y-auto"></div>
-                
-                <div class="flex gap-2 mb-4">
-                    <input type="text" id="mobile-promo-input" placeholder="Discount code (e.g. JEJE10)" class="flex-1 px-3 py-2 text-xs border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white">
-                    <button onclick="applyPromo('mobile')" class="px-4 py-2 bg-pink-600 text-white font-medium text-xs rounded-lg hover:bg-pink-700 transition shadow-sm">Apply</button>
-                </div>
-
-                <div class="space-y-1.5 text-xs text-slate-600 pt-3 border-t border-pink-200/60">
-                    <div class="flex justify-between"><span>Subtotal</span><span id="mobile-subtotal" class="font-medium text-slate-800">EGP 0</span></div>
-                    <div class="flex justify-between text-emerald-600"><span id="mobile-discount-label">Discount</span><span id="mobile-discount">EGP 0</span></div>
-                    <div class="flex justify-between"><span>Shipping</span><span id="mobile-shipping" class="font-medium text-slate-800">EGP 50</span></div>
-                    <div class="flex justify-between font-bold text-sm text-pink-900 pt-2 border-t border-pink-200">
-                        <span>Total</span>
-                        <span id="mobile-total" class="text-pink-600">EGP 0</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Breadcrumb Steps -->
-            <nav class="flex items-center text-xs sm:text-sm font-medium text-slate-400 mb-8 overflow-x-auto pb-2">
-                <a href="#" class="text-pink-600 hover:text-pink-700 transition flex items-center gap-1.5">
+            <nav class="flex items-center gap-6">
+                <button onclick="showSection('store')" class="text-xs sm:text-sm font-semibold text-slate-700 hover:text-pink-600 transition">Store</button>
+                <button onclick="toggleCartDrawer()" class="relative flex items-center gap-2 bg-pink-50 hover:bg-pink-100 text-pink-700 px-4 py-2 rounded-full font-semibold text-xs sm:text-sm border border-pink-200 transition">
+                    <i class="fa-solid fa-cart-shopping text-pink-500"></i>
                     <span>Cart</span>
-                    <i class="fa-solid fa-chevron-right text-[10px] text-slate-300"></i>
-                </a>
-                <span class="text-pink-600 ml-2 mr-2 font-semibold">Information</span>
-                <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 mr-2"></i>
-                <span class="hover:text-slate-600 transition">Shipping</span>
-                <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 mx-2"></i>
-                <span class="hover:text-slate-600 transition">Payment</span>
+                    <span id="cart-nav-badge" class="bg-pink-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+                </button>
             </nav>
+        </div>
+    </header>
 
-            <!-- Express Checkout Section -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400">Express Checkout</h2>
-                    <span class="text-xs text-pink-500 bg-pink-50 px-2.5 py-0.5 rounded-full font-medium">Instant & Secure</span>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <button type="button" onclick="quickPay('Apple Pay')" class="flex items-center justify-center gap-2 py-3 px-4 bg-slate-900 hover:bg-black text-white rounded-xl transition duration-200 shadow-sm font-medium text-sm group">
-                        <i class="fa-brands fa-apple text-lg"></i>
-                        <span>Pay</span>
-                    </button>
-                    <button type="button" onclick="quickPay('Instapay')" class="flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white rounded-xl transition duration-200 shadow-sm font-medium text-sm">
-                        <i class="fa-solid fa-bolt"></i>
-                        <span>Instapay</span>
-                    </button>
-                </div>
-                <div class="relative my-6">
-                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-pink-100"></div></div>
-                    <div class="relative flex justify-center text-xs uppercase"><span class="bg-white px-4 text-slate-400 font-medium">Or continue below</span></div>
-                </div>
+    <!-- Slide-over Cart Drawer -->
+    <div id="cart-drawer-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300" onclick="toggleCartDrawer()"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between p-6">
+        <div>
+            <div class="flex items-center justify-between pb-4 border-b border-pink-100">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-bag-shopping text-pink-500"></i> Your Shopping Bag
+                </h3>
+                <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600 p-2 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
-
-            <!-- Checkout Form -->
-            <form id="checkout-form" onsubmit="handleCheckout(event)" class="space-y-6">
-                <div>
-                    <div class="flex justify-between items-center mb-2">
-                        <label class="block text-sm font-semibold text-slate-700">Contact Information</label>
-                    </div>
-                    <div class="relative">
-                        <input type="text" id="contact" required placeholder="Email or Mobile Phone Number" 
-                            class="w-full px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
-                        <i class="fa-regular fa-envelope absolute right-4 top-3.5 text-slate-400"></i>
-                    </div>
-                </div>
-
-                <!-- Shipping Address -->
-                <div>
-                    <h3 class="text-sm font-semibold text-slate-700 mb-3">Shipping Address</h3>
-                    <div class="space-y-3">
-                        <div>
-                            <select id="country" class="w-full px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
-                                <option value="EG">Egypt (مصر)</option>
-                            </select>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" id="first-name" required placeholder="First Name" class="px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
-                            <input type="text" id="last-name" required placeholder="Last Name" class="px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
-                        </div>
-                        <input type="text" id="address" required placeholder="Street address, building, floor, apt #" class="w-full px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <select id="governorate" onchange="updateShippingCost()" class="w-full px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
-                                    <option value="cairo">Cairo (القاهرة)</option>
-                                    <option value="giza">Giza (الجيزة)</option>
-                                    <option value="alexandria">Alexandria (الإسكندرية)</option>
-                                    <option value="other">Other Governorates</option>
-                                </select>
-                            </div>
-                            <input type="text" id="city" required placeholder="City / Area" class="px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
-                        </div>
-                        <div class="relative">
-                            <input type="tel" id="phone" required placeholder="Mobile Phone (+20 1xx xxx xxxx)" class="w-full px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
-                            <i class="fa-solid fa-phone absolute right-4 top-3.5 text-slate-400"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Shipping Method -->
-                <div>
-                    <h3 class="text-sm font-semibold text-slate-700 mb-3">Shipping Method</h3>
-                    <div class="space-y-2">
-                        <div class="relative">
-                            <input type="radio" id="ship-standard" name="shipping_method" value="standard" checked onchange="updateShippingCost()" class="radio-custom hidden">
-                            <label for="ship-standard" class="flex items-center justify-between p-4 border border-pink-200 rounded-xl cursor-pointer transition hover:border-pink-300">
-                                <div class="flex items-center gap-3">
-                                    <span class="dot w-4 h-4 rounded-full border border-pink-300 flex items-center justify-center"></span>
-                                    <div>
-                                        <p class="text-sm font-semibold text-slate-800">Standard Delivery</p>
-                                        <p class="text-xs text-slate-500">2-4 Business Days</p>
-                                    </div>
-                                </div>
-                                <span id="standard-cost-display" class="text-sm font-medium text-pink-600">EGP 50</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Payment -->
-                <div>
-                    <h3 class="text-sm font-semibold text-slate-700 mb-1">Payment</h3>
-                    <div class="space-y-3">
-                        <div class="border border-pink-200 rounded-xl overflow-hidden bg-white">
-                            <div class="p-4 flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <input type="radio" id="pay-cod" name="payment_method" value="cod" checked class="accent-pink-500">
-                                    <label for="pay-cod" class="text-sm font-medium text-slate-800 cursor-pointer">Cash on Delivery (COD)</label>
-                                </div>
-                                <i class="fa-solid fa-money-bill-wave text-pink-500"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="pt-4">
-                    <button type="submit" id="submit-btn" class="w-full bg-gradient-to-r from-pink-500 via-pink-600 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-bag-shopping"></i>
-                        <span>Complete Order</span>
-                        <span id="btn-total-price" class="text-pink-100 font-normal border-l border-pink-400 pl-2 ml-1">EGP 0</span>
-                    </button>
-                </div>
-            </form>
+            <div id="drawer-cart-items" class="space-y-4 my-6 max-h-[60vh] overflow-y-auto pr-1"></div>
         </div>
 
-        <!-- Right Side: Order Summary -->
-        <div class="hidden lg:block w-[420px] bg-pink-50/60 p-8 border-l border-pink-100 flex flex-col justify-between">
-            <div>
-                <div class="flex items-center justify-between mb-6 pb-4 border-b border-pink-200/60">
-                    <h2 class="text-lg font-bold text-slate-800 tracking-tight flex items-center gap-2">
-                        <span>Order Summary</span>
-                        <span id="cart-item-count-badge" class="bg-pink-200 text-pink-800 text-xs px-2.5 py-0.5 rounded-full font-bold">2 items</span>
-                    </h2>
-                </div>
-
-                <div id="desktop-cart-items-container" class="space-y-4 max-h-[380px] overflow-y-auto pr-1 mb-6"></div>
-
-                <div class="flex gap-2 mb-6">
-                    <input type="text" id="desktop-promo-input" placeholder="Discount code (try JEJE10)" class="w-full px-3.5 py-2.5 text-xs border border-pink-200 rounded-xl focus:outline-none bg-white shadow-sm uppercase">
-                    <button onclick="applyPromo('desktop')" class="px-5 py-2.5 bg-pink-600 text-white font-medium text-xs rounded-xl transition shadow-sm">Apply</button>
-                </div>
-
-                <div class="space-y-2.5 text-xs text-slate-600 pt-4 border-t border-pink-200/60">
-                    <div class="flex justify-between"><span>Subtotal</span><span id="desktop-subtotal" class="font-semibold text-slate-800">EGP 0</span></div>
-                    <div id="desktop-discount-row" class="flex justify-between text-emerald-600 hidden"><span id="desktop-discount-label">Discount</span><span id="desktop-discount">-EGP 0</span></div>
-                    <div class="flex justify-between"><span>Shipping estimate</span><span id="desktop-shipping" class="font-semibold text-slate-800">EGP 50</span></div>
-                </div>
-
-                <div class="mt-6 pt-4 border-t border-pink-200 flex justify-between items-baseline">
-                    <span class="text-base font-bold text-slate-800">Total</span>
-                    <span id="desktop-total" class="text-2xl font-bold text-pink-600">0</span>
-                </div>
+        <div class="pt-4 border-t border-pink-100 space-y-4">
+            <div class="flex justify-between items-center text-sm font-bold text-slate-800">
+                <span>Subtotal</span>
+                <span id="drawer-subtotal" class="text-pink-600">EGP 0</span>
             </div>
+            <button onclick="goToCheckoutFromDrawer()" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold py-3.5 rounded-xl shadow-lg hover:from-pink-600 hover:to-rose-600 transition flex items-center justify-center gap-2">
+                <span>Proceed to Checkout</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
         </div>
     </div>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl mx-auto w-full px-0 lg:px-6 my-0 lg:my-6">
+
+        <!-- SECTION 1: STORE CATALOG -->
+        <section id="store-section" class="px-4 sm:px-8 py-6 space-y-8">
+            <div class="bg-gradient-to-r from-pink-500 via-pink-600 to-rose-500 text-white rounded-3xl p-8 sm:p-12 text-center shadow-xl relative overflow-hidden">
+                <h1 class="brand-logo text-4xl sm:text-6xl font-bold mb-3">jeje Boutique</h1>
+                <p class="text-pink-100 text-xs sm:text-sm max-w-md mx-auto">Discover luxury apparel, accessories, and beauty collections curated specially for you.</p>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg sm:text-xl font-bold text-slate-800">Featured Collection</h2>
+                <span class="text-xs text-pink-600 font-semibold bg-pink-50 px-3 py-1 rounded-full border border-pink-200">New Arrivals</span>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="store-products-grid"></div>
+        </section>
+
+        <!-- SECTION 2: CHECKOUT (ORIGINAL UI FULL VERSION) -->
+        <section id="checkout-section" class="hidden min-h-screen flex flex-col lg:flex-row shadow-2xl rounded-none lg:rounded-3xl overflow-hidden bg-white">
+            
+            <!-- Left Side: Checkout Form Area -->
+            <div class="flex-1 p-4 sm:p-8 lg:p-12 overflow-y-auto">
+                
+                <!-- Top Header & Brand -->
+                <header class="flex items-center justify-between pb-6 mb-6 border-b border-pink-100">
+                    <a href="#" onclick="showSection('store')" class="group flex items-center gap-2">
+                        <span class="brand-logo text-3xl sm:text-4xl font-bold tracking-tight text-pink-600 transition group-hover:text-pink-700">jeje</span>
+                        <span class="inline-block w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span>
+                    </a>
+                    
+                    <div class="flex items-center gap-4 text-xs sm:text-sm text-slate-500">
+                        <span class="hidden sm:inline-flex items-center gap-1.5 bg-pink-50 text-pink-700 px-3 py-1.5 rounded-full font-medium border border-pink-200">
+                            <i class="fa-solid fa-bag-shopping text-pink-500"></i>
+                            EGP (L.E)
+                        </span>
+                        <button id="mobile-summary-toggle" onclick="toggleMobileSummary()" class="lg:hidden flex items-center gap-2 text-pink-600 font-medium bg-pink-50 px-3 py-1.5 rounded-lg border border-pink-200">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span id="mobile-toggle-text">Show Order Summary</span>
+                            <i id="mobile-toggle-arrow" class="fa-solid fa-chevron-down text-xs transition-transform duration-200"></i>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Mobile Summary Accordion -->
+                <div id="mobile-summary-dropdown" class="hidden lg:hidden mb-6 p-4 bg-pink-50/70 rounded-2xl border border-pink-200 transition-all">
+                    <div id="mobile-cart-items-container" class="space-y-3 mb-4 max-h-60 overflow-y-auto"></div>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <input type="text" id="mobile-promo-input" placeholder="Discount code (e.g. JEJE10)" class="flex-1 px-3 py-2 text-xs border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white">
+                        <button onclick="applyPromo('mobile')" class="px-4 py-2 bg-pink-600 text-white font-medium text-xs rounded-lg hover:bg-pink-700 transition shadow-sm">Apply</button>
+                    </div>
+
+                    <div class="space-y-1.5 text-xs text-slate-600 pt-3 border-t border-pink-200/60">
+                        <div class="flex justify-between"><span>Subtotal</span><span id="mobile-subtotal" class="font-medium text-slate-800">EGP 0</span></div>
+                        <div class="flex justify-between text-emerald-600"><span id="mobile-discount-label">Discount</span><span id="mobile-discount">EGP 0</span></div>
+                        <div class="flex justify-between"><span>Shipping</span><span id="mobile-shipping" class="font-medium text-slate-800">EGP 50</span></div>
+                        <div class="flex justify-between font-bold text-sm text-pink-900 pt-2 border-t border-pink-200">
+                            <span>Total</span>
+                            <span id="mobile-total" class="text-pink-600">EGP 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Breadcrumb Steps -->
+                <nav class="flex items-center text-xs sm:text-sm font-medium text-slate-400 mb-8 overflow-x-auto pb-2">
+                    <button onclick="showSection('store')" class="text-pink-600 hover:text-pink-700 transition flex items-center gap-1.5">
+                        <span>Store</span>
+                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-300"></i>
+                    </button>
+                    <span class="text-pink-600 ml-2 mr-2 font-semibold">Information</span>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 mr-2"></i>
+                    <span class="hover:text-slate-600 transition">Shipping</span>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 mx-2"></i>
+                    <span class="hover:text-slate-600 transition">Payment</span>
+                </nav>
+
+                <!-- Express Checkout Section -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400">Express Checkout</h2>
+                        <span class="text-xs text-pink-500 bg-pink-50 px-2.5 py-0.5 rounded-full font-medium">Instant & Secure</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button type="button" onclick="quickPay('Apple Pay')" class="flex items-center justify-center gap-2 py-3 px-4 bg-slate-900 hover:bg-black text-white rounded-xl transition duration-200 shadow-sm font-medium text-sm group">
+                            <i class="fa-brands fa-apple text-lg"></i>
+                            <span>Pay</span>
+                        </button>
+                        <button type="button" onclick="quickPay('Instapay')" class="flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white rounded-xl transition duration-200 shadow-sm font-medium text-sm">
+                            <i class="fa-solid fa-bolt"></i>
+                            <span>Instapay</span>
+                        </button>
+                    </div>
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-pink-100"></div></div>
+                        <div class="relative flex justify-center text-xs uppercase"><span class="bg-white px-4 text-slate-400 font-medium">Or continue below</span></div>
+                    </div>
+                </div>
+
+                <!-- Checkout Form -->
+                <form id="checkout-form" onsubmit="handleCheckout(event)" class="space-y-6">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="block text-sm font-semibold text-slate-700">Contact Information</label>
+                        </div>
+                        <div class="relative">
+                            <input type="text" id="contact" required placeholder="Email or Mobile Phone Number" 
+                                class="w-full px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
+                            <i class="fa-regular fa-envelope absolute right-4 top-3.5 text-slate-400"></i>
+                        </div>
+                        <div class="mt-3 flex items-center gap-2">
+                            <input type="checkbox" id="newsletter" checked class="w-4 h-4 text-pink-600 accent-pink-500 rounded border-pink-300 focus:ring-pink-400">
+                            <label for="newsletter" class="text-xs text-slate-600 cursor-pointer">Email me with exclusive <span class="font-semibold text-pink-600">jeje</span> offers and styling news</label>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Address -->
+                    <div>
+                        <h3 class="text-sm font-semibold text-slate-700 mb-3">Shipping Address</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <select id="country" class="w-full px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
+                                    <option value="EG">Egypt (مصر)</option>
+                                    <option value="AE">United Arab Emirates (الإمارات)</option>
+                                    <option value="SA">Saudi Arabia (السعودية)</option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <input type="text" id="first-name" required placeholder="First Name" class="px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
+                                <input type="text" id="last-name" required placeholder="Last Name" class="px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
+                            </div>
+                            <input type="text" id="address" required placeholder="Street address, building, floor, apt #" class="w-full px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <select id="governorate" onchange="updateShippingCost()" class="w-full px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
+                                        <option value="cairo">Cairo (القاهرة)</option>
+                                        <option value="giza">Giza (الجيزة)</option>
+                                        <option value="alexandria">Alexandria (الإسكندرية)</option>
+                                        <option value="mansoura">Mansoura (المنصورة)</option>
+                                        <option value="other">Other Governorates</option>
+                                    </select>
+                                </div>
+                                <input type="text" id="city" required placeholder="City / Area (e.g. New Cairo)" class="px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
+                            </div>
+                            <div class="relative">
+                                <input type="tel" id="phone" required placeholder="Mobile Phone (+20 1xx xxx xxxx)" class="w-full px-4 py-3 rounded-xl border border-pink-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 focus:outline-none transition text-sm bg-slate-50/30">
+                                <i class="fa-solid fa-phone absolute right-4 top-3.5 text-slate-400"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Method Selection -->
+                    <div>
+                        <h3 class="text-sm font-semibold text-slate-700 mb-3">Shipping Method</h3>
+                        <div class="space-y-2">
+                            <div class="relative">
+                                <input type="radio" id="ship-standard" name="shipping_method" value="standard" checked onchange="updateShippingCost()" class="radio-custom hidden">
+                                <label for="ship-standard" class="flex items-center justify-between p-4 border border-pink-200 rounded-xl cursor-pointer transition hover:border-pink-300">
+                                    <div class="flex items-center gap-3">
+                                        <span class="dot w-4 h-4 rounded-full border border-pink-300 flex items-center justify-center"></span>
+                                        <div>
+                                            <p class="text-sm font-semibold text-slate-800">Standard Delivery</p>
+                                            <p class="text-xs text-slate-500">2-4 Business Days</p>
+                                        </div>
+                                    </div>
+                                    <span id="standard-cost-display" class="text-sm font-medium text-pink-600">EGP 50</span>
+                                </label>
+                            </div>
+                            <div class="relative">
+                                <input type="radio" id="ship-express" name="shipping_method" value="express" onchange="updateShippingCost()" class="radio-custom hidden">
+                                <label for="ship-express" class="flex items-center justify-between p-4 border border-pink-200 rounded-xl cursor-pointer transition hover:border-pink-300">
+                                    <div class="flex items-center gap-3">
+                                        <span class="dot w-4 h-4 rounded-full border border-pink-300 flex items-center justify-center"></span>
+                                        <div>
+                                            <p class="text-sm font-semibold text-slate-800 flex items-center gap-2">
+                                                Express Same-Day Delivery
+                                                <span class="text-[10px] bg-pink-100 text-pink-700 px-2 py-0.5 rounded-full font-bold">FAST</span>
+                                            </p>
+                                            <p class="text-xs text-slate-500">Delivered within 24 Hours</p>
+                                        </div>
+                                    </div>
+                                    <span id="express-cost-display" class="text-sm font-medium text-pink-600">EGP 100</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div>
+                        <h3 class="text-sm font-semibold text-slate-700 mb-1">Payment</h3>
+                        <div class="space-y-3">
+                            <div class="border border-pink-200 rounded-xl overflow-hidden bg-white">
+                                <div class="p-4 bg-pink-50/50 flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <input type="radio" id="pay-card" name="payment_method" value="card" checked onchange="togglePaymentSection('card')" class="accent-pink-500">
+                                        <label for="pay-card" class="text-sm font-medium text-slate-800 cursor-pointer">Credit or Debit Card</label>
+                                    </div>
+                                    <div class="flex gap-1.5 text-slate-600">
+                                        <i class="fa-brands fa-cc-visa text-xl text-blue-800"></i>
+                                        <i class="fa-brands fa-cc-mastercard text-xl text-red-500"></i>
+                                    </div>
+                                </div>
+                                <div id="card-details-form" class="p-4 space-y-3 border-t border-pink-100">
+                                    <input type="text" id="card-number" placeholder="Card Number (0000 0000 0000 0000)" maxlength="19" class="w-full px-4 py-2.5 rounded-lg border border-pink-200 focus:outline-none text-xs">
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <input type="text" placeholder="MM / YY" maxlength="5" class="px-4 py-2.5 rounded-lg border border-pink-200 focus:outline-none text-xs">
+                                        <input type="text" placeholder="CVV" maxlength="4" class="px-4 py-2.5 rounded-lg border border-pink-200 focus:outline-none text-xs">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="border border-pink-200 rounded-xl overflow-hidden bg-white">
+                                <div class="p-4 flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <input type="radio" id="pay-cod" name="payment_method" value="cod" onchange="togglePaymentSection('cod')" class="accent-pink-500">
+                                        <label for="pay-cod" class="text-sm font-medium text-slate-800 cursor-pointer">Cash on Delivery (COD)</label>
+                                    </div>
+                                    <i class="fa-solid fa-money-bill-wave text-pink-500"></i>
+                                </div>
+                                <div id="cod-info-msg" class="hidden p-4 bg-pink-50/60 border-t border-pink-100 text-xs text-pink-800">
+                                    Pay easily in cash upon receiving your order at your doorstep.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-4">
+                        <button type="submit" id="submit-btn" class="w-full bg-gradient-to-r from-pink-500 via-pink-600 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                            <span>Complete Order</span>
+                            <span id="btn-total-price" class="text-pink-100 font-normal border-l border-pink-400 pl-2 ml-1">EGP 0</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Side: Order Summary -->
+            <div class="hidden lg:block w-[420px] bg-pink-50/60 p-8 border-l border-pink-100 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-pink-200/60">
+                        <h2 class="text-lg font-bold text-slate-800 tracking-tight flex items-center gap-2">
+                            <span>Order Summary</span>
+                            <span id="cart-item-count-badge" class="bg-pink-200 text-pink-800 text-xs px-2.5 py-0.5 rounded-full font-bold">0 items</span>
+                        </h2>
+                    </div>
+
+                    <div id="desktop-cart-items-container" class="space-y-4 max-h-[380px] overflow-y-auto pr-1 mb-6"></div>
+
+                    <div class="flex gap-2 mb-6">
+                        <input type="text" id="desktop-promo-input" placeholder="Discount code (try JEJE10)" class="w-full px-3.5 py-2.5 text-xs border border-pink-200 rounded-xl focus:outline-none bg-white shadow-sm uppercase">
+                        <button onclick="applyPromo('desktop')" class="px-5 py-2.5 bg-pink-600 hover:bg-pink-700 text-white font-medium text-xs rounded-xl transition shadow-sm">Apply</button>
+                    </div>
+
+                    <div class="space-y-2.5 text-xs text-slate-600 pt-4 border-t border-pink-200/60">
+                        <div class="flex justify-between"><span>Subtotal</span><span id="desktop-subtotal" class="font-semibold text-slate-800">EGP 0</span></div>
+                        <div id="desktop-discount-row" class="flex justify-between text-emerald-600 hidden"><span id="desktop-discount-label">Discount</span><span id="desktop-discount">-EGP 0</span></div>
+                        <div class="flex justify-between"><span>Shipping estimate</span><span id="desktop-shipping" class="font-semibold text-slate-800">EGP 50</span></div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-pink-200 flex justify-between items-baseline">
+                        <span class="text-base font-bold text-slate-800">Total</span>
+                        <span id="desktop-total" class="text-2xl font-bold text-pink-600">0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-pink-100 py-6 text-center text-xs text-slate-400">
+        <p>© 2026 All rights reserved to <span class="brand-logo text-pink-600 font-bold text-sm">jeje</span></p>
+    </footer>
 
     <!-- Success Modal -->
     <div id="success-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
@@ -311,50 +427,103 @@
             </div>
             <h2 class="brand-logo text-3xl font-bold text-pink-600 mb-1">jeje</h2>
             <h3 class="text-xl font-bold text-slate-800 mb-2">Thank You for Your Order!</h3>
-            <p class="text-xs text-slate-500 mb-6">Order confirmed. Details sent to WhatsApp.</p>
+            <p class="text-xs text-slate-500 mb-6">Order details have been redirected to WhatsApp for final confirmation.</p>
             <button onclick="resetCheckout()" class="w-full py-3.5 bg-pink-600 hover:bg-pink-700 text-white font-semibold text-sm rounded-xl shadow-lg transition">Continue Shopping</button>
         </div>
     </div>
 
+    <!-- JavaScript Logic -->
     <script>
-        // OWNER WHATSAPP PHONE NUMBER (Change this to your actual phone number with country code, e.g., 201012345678)
-        const BRAND_OWNER_WHATSAPP = "201005557661";
+        // TARGET WHATSAPP PHONE NUMBER
+        const BRAND_WHATSAPP_PHONE = "20105557661";
+
+        const storeProducts = [
+            { id: 1, name: "Rose Blush Silk Dress", variant: "Soft Pink / M", price: 1450, image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=400&q=80" },
+            { id: 2, name: "Blush Velvet Handbag", variant: "Rose Gold Accent", price: 980, image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&q=80" },
+            { id: 3, name: "Pink Pearl Drop Earrings", variant: "One Size", price: 350, image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=400&q=80" },
+            { id: 4, name: "Glossy Rose Lip Serum", variant: "Shimmer Pink", price: 240, image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=400&q=80" }
+        ];
 
         let cartItems = [
-            { id: 1, name: "Rose Blush Silk Dress", variant: "Soft Pink / M", price: 1450, qty: 1, image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=200&q=80" },
-            { id: 2, name: "Blush Velvet Handbag", variant: "Rose Gold Accent", price: 980, qty: 1, image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=200&q=80" }
+            { id: 1, name: "Rose Blush Silk Dress", variant: "Soft Pink / M", price: 1450, qty: 1, image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=200&q=80" }
         ];
 
         let appliedDiscount = 0;
         let shippingCost = 50;
 
         window.addEventListener('DOMContentLoaded', () => {
+            renderStoreProducts();
             renderCart();
             updateShippingCost();
         });
 
+        function renderStoreProducts() {
+            const grid = document.getElementById('store-products-grid');
+            grid.innerHTML = storeProducts.map(p => `
+                <div class="bg-white rounded-3xl border border-pink-100 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                    <img src="${p.image}" class="w-full h-64 object-cover">
+                    <div class="p-5 space-y-3">
+                        <h3 class="font-bold text-slate-800 text-sm sm:text-base">${p.name}</h3>
+                        <p class="text-xs text-slate-400">${p.variant}</p>
+                        <div class="flex items-center justify-between pt-2">
+                            <span class="text-pink-600 font-bold text-base">EGP ${p.price}</span>
+                            <button onclick="addToCartFromStore(${p.id})" class="bg-pink-50 hover:bg-pink-600 hover:text-white text-pink-700 border border-pink-200 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-plus"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCartFromStore(id) {
+            const prod = storeProducts.find(p => p.id === id);
+            const inCart = cartItems.find(c => c.id === id);
+            if(inCart) {
+                inCart.qty++;
+            } else {
+                cartItems.push({...prod, qty: 1});
+            }
+            showToast('Added to Bag', `${prod.name} was added to your cart.`);
+            renderCart();
+        }
+
         function renderCart() {
             const container = document.getElementById('desktop-cart-items-container');
             const mobileContainer = document.getElementById('mobile-cart-items-container');
+            const drawerContainer = document.getElementById('drawer-cart-items');
             
-            const cartHTML = cartItems.map(item => `
-                <div class="flex items-center gap-3 bg-white p-2.5 rounded-2xl border border-pink-100 shadow-sm">
-                    <img src="${item.image}" class="w-14 h-14 rounded-xl object-cover bg-pink-100">
-                    <div class="flex-1 min-w-0">
-                        <h4 class="text-xs font-bold text-slate-800 truncate">${item.name}</h4>
-                        <p class="text-[11px] text-slate-400 mb-1">${item.variant}</p>
-                        <div class="flex items-center gap-2">
-                            <button onclick="changeQty(${item.id}, -1)" class="w-5 h-5 rounded bg-pink-50 text-pink-700 text-xs">-</button>
-                            <span class="text-xs font-semibold">${item.qty}</span>
-                            <button onclick="changeQty(${item.id}, 1)" class="w-5 h-5 rounded bg-pink-50 text-pink-700 text-xs">+</button>
+            if (cartItems.length === 0) {
+                const emptyHTML = `<p class="text-center text-xs text-slate-400 py-6">Your shopping bag is empty.</p>`;
+                container.innerHTML = emptyHTML;
+                mobileContainer.innerHTML = emptyHTML;
+                drawerContainer.innerHTML = emptyHTML;
+            } else {
+                const cartHTML = cartItems.map(item => `
+                    <div class="flex items-center gap-3 bg-white p-2.5 rounded-2xl border border-pink-100 shadow-sm">
+                        <img src="${item.image}" class="w-12 h-12 rounded-xl object-cover bg-pink-100">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-bold text-slate-800 truncate">${item.name}</h4>
+                            <p class="text-[10px] text-slate-400 mb-1">${item.variant}</p>
+                            <div class="flex items-center gap-2">
+                                <button onclick="changeQty(${item.id}, -1)" class="w-5 h-5 rounded bg-pink-50 text-pink-700 text-xs font-bold">-</button>
+                                <span class="text-xs font-semibold">${item.qty}</span>
+                                <button onclick="changeQty(${item.id}, 1)" class="w-5 h-5 rounded bg-pink-50 text-pink-700 text-xs font-bold">+</button>
+                            </div>
                         </div>
+                        <span class="text-xs font-bold text-pink-700">EGP ${(item.price * item.qty).toLocaleString()}</span>
                     </div>
-                    <span class="text-xs font-bold text-pink-700">EGP ${(item.price * item.qty).toLocaleString()}</span>
-                </div>
-            `).join('');
+                `).join('');
 
-            container.innerHTML = cartHTML;
-            mobileContainer.innerHTML = cartHTML;
+                container.innerHTML = cartHTML;
+                mobileContainer.innerHTML = cartHTML;
+                drawerContainer.innerHTML = cartHTML;
+            }
+
+            const totalCount = cartItems.reduce((acc, curr) => acc + curr.qty, 0);
+            document.getElementById('cart-nav-badge').innerText = totalCount;
+            document.getElementById('cart-item-count-badge').innerText = `${totalCount} item${totalCount !== 1 ? 's' : ''}`;
+
             calculateTotals();
         }
 
@@ -367,44 +536,140 @@
             }
         }
 
+        function toggleCartDrawer() {
+            const overlay = document.getElementById('cart-drawer-overlay');
+            const drawer = document.getElementById('cart-drawer');
+            
+            overlay.classList.toggle('opacity-0');
+            overlay.classList.toggle('pointer-events-none');
+            drawer.classList.toggle('translate-x-full');
+        }
+
+        function goToCheckoutFromDrawer() {
+            if(cartItems.length === 0) {
+                showToast('Bag Empty', 'Please add items to your cart first.', 'error');
+                return;
+            }
+            toggleCartDrawer();
+            showSection('checkout');
+        }
+
+        function showSection(section) {
+            if(section === 'store') {
+                document.getElementById('store-section').classList.remove('hidden');
+                document.getElementById('checkout-section').classList.add('hidden');
+            } else {
+                document.getElementById('store-section').classList.add('hidden');
+                document.getElementById('checkout-section').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
         function updateShippingCost() {
             const gov = document.getElementById('governorate').value;
-            shippingCost = (gov === 'cairo' || gov === 'giza') ? 50 : 70;
+            const isExpress = document.getElementById('ship-express').checked;
+
+            if (gov === 'cairo' || gov === 'giza') {
+                shippingCost = isExpress ? 100 : 50;
+            } else {
+                shippingCost = isExpress ? 120 : 70;
+            }
+
+            calculateTotals();
+        }
+
+        function applyPromo(type) {
+            const input = document.getElementById(type === 'mobile' ? 'mobile-promo-input' : 'desktop-promo-input');
+            const code = input.value.trim().toUpperCase();
+
+            if (code === 'JEJE10') {
+                appliedDiscount = 0.10;
+                showToast('Promo Applied!', 'You saved 10% on your order.');
+            } else {
+                showToast('Invalid Code', 'Try code JEJE10 for 10% off', 'error');
+                appliedDiscount = 0;
+            }
             calculateTotals();
         }
 
         function calculateTotals() {
             const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const grandTotal = Math.max(0, subtotal - (subtotal * appliedDiscount) + shippingCost);
+            const discountAmount = subtotal * appliedDiscount;
+            const grandTotal = Math.max(0, subtotal - discountAmount + shippingCost);
 
             document.getElementById('desktop-subtotal').innerText = `EGP ${subtotal.toLocaleString()}`;
             document.getElementById('desktop-shipping').innerText = `EGP ${shippingCost}`;
             document.getElementById('desktop-total').innerText = grandTotal.toLocaleString();
             document.getElementById('btn-total-price').innerText = `EGP ${grandTotal.toLocaleString()}`;
+            document.getElementById('drawer-subtotal').innerText = `EGP ${subtotal.toLocaleString()}`;
+
+            document.getElementById('mobile-subtotal').innerText = `EGP ${subtotal.toLocaleString()}`;
+            document.getElementById('mobile-shipping').innerText = `EGP ${shippingCost}`;
+            document.getElementById('mobile-total').innerText = `EGP ${grandTotal.toLocaleString()}`;
+        }
+
+        function togglePaymentSection(type) {
+            document.getElementById('card-details-form').classList.toggle('hidden', type !== 'card');
+            document.getElementById('cod-info-msg').classList.toggle('hidden', type !== 'cod');
+        }
+
+        function toggleMobileSummary() {
+            const dropdown = document.getElementById('mobile-summary-dropdown');
+            dropdown.classList.toggle('hidden');
         }
 
         function handleCheckout(e) {
             e.preventDefault();
-            
+
+            if (cartItems.length === 0) {
+                showToast('Cart Empty', 'Add products before checking out.', 'error');
+                return;
+            }
+
             const name = `${document.getElementById('first-name').value} ${document.getElementById('last-name').value}`;
+            const contact = document.getElementById('contact').value;
             const phone = document.getElementById('phone').value;
             const address = document.getElementById('address').value;
             const city = document.getElementById('city').value;
             const total = document.getElementById('desktop-total').innerText;
 
-            // Prepare WhatsApp message
-            let itemsList = cartItems.map(i => `- ${i.name} (${i.qty}x)`).join('%0A');
-            let message = `*New Order - jeje*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${address}, ${city}%0A%0A*Items:*%0A${itemsList}%0A%0A*Total:* EGP ${total}`;
+            let itemsList = cartItems.map(i => `• ${i.name} (Qty: ${i.qty}) - EGP ${i.price * i.qty}`).join('%0A');
+            
+            let whatsappMsg = `*NEW ORDER - JEJE BOUTIQUE*%0A%0A*Customer:* ${name}%0A*Contact:* ${contact}%0A*Phone:* ${phone}%0A*Address:* ${address}, ${city}%0A%0A*Order Items:*%0A${itemsList}%0A%0A*Total Amount:* EGP ${total}`;
 
-            // Redirect to owner's WhatsApp
-            window.open(`https://wa.me/${BRAND_OWNER_WHATSAPP}?text=${message}`, '_blank');
+            // Redirect to brand owner WhatsApp
+            window.open(`https://wa.me/${BRAND_WHATSAPP_PHONE}?text=${whatsappMsg}`, '_blank');
 
-            // Show Success Modal
-            document.getElementById('success-modal').classList.remove('opacity-0', 'pointer-events-none');
+            // Show confirmation modal
+            const modal = document.getElementById('success-modal');
+            const card = document.getElementById('modal-card');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            card.classList.remove('scale-90');
+            card.classList.add('scale-100');
+
+            if (window.confetti) {
+                confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
+            }
         }
 
         function resetCheckout() {
-            document.getElementById('success-modal').classList.add('opacity-0', 'pointer-events-none');
+            const modal = document.getElementById('success-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            showSection('store');
+        }
+
+        function showToast(title, message, type = 'success') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-message').innerText = message;
+
+            toast.classList.remove('translate-y-[-150%]', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-[-150%]', 'opacity-0');
+            }, 3000);
         }
     </script>
 </body>
